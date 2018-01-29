@@ -60,16 +60,18 @@ public class MainFrm extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("基本数据维护");
+		JMenu mnNewMenu = new JMenu("基本功能菜单");
 		mnNewMenu.setIcon(new ImageIcon(MainFrm.class.getResource("/image/gear_24.12px_1189518_easyicon.net.png")));
-		mnNewMenu.setFont(new Font("黑体", Font.PLAIN, 17));
+		mnNewMenu.setFont(new Font("黑体", Font.PLAIN, 20));
 		menuBar.add(mnNewMenu);
 		
 		JMenu menu = new JMenu("图书类别管理");
-		menu.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menu.setIcon(new ImageIcon(MainFrm.class.getResource("/image/tablet_15.695099818512px_1191605_easyicon.net.png")));
+		menu.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		mnNewMenu.add(menu);
 		
 		JMenuItem menuItem_1 = new JMenuItem("图书类别添加");
+		menuItem_1.setIcon(new ImageIcon(MainFrm.class.getResource("/image/notes_16.316981132075px_1191617_easyicon.net.png")));
 		menuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BookTypeAddIntelnalFrm bookTypeAddIntelnalFrm=new BookTypeAddIntelnalFrm();
@@ -77,10 +79,11 @@ public class MainFrm extends JFrame {
 				table.add(bookTypeAddIntelnalFrm);
 			}
 		});
-		menuItem_1.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menuItem_1.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu.add(menuItem_1);
 		
 		JMenuItem menuItem_2 = new JMenuItem("图书类别查询");
+		menuItem_2.setIcon(new ImageIcon(MainFrm.class.getResource("/image/search_15.853345554537px_1191635_easyicon.net.png")));
 		menuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BookTypeManagerIntelnalFrm bookTypeManagerIntelnalFrm=new BookTypeManagerIntelnalFrm();
@@ -88,26 +91,31 @@ public class MainFrm extends JFrame {
 				table.add(bookTypeManagerIntelnalFrm);
 			}
 		});
-		menuItem_2.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menuItem_2.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu.add(menuItem_2);
 		
 		JMenu menu_1 = new JMenu("图书管理");
-		menu_1.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menu_1.setIcon(new ImageIcon(MainFrm.class.getResource("/image/book_A_13.965485921889px_1191578_easyicon.net.png")));
+		menu_1.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		mnNewMenu.add(menu_1);
 		
 		JMenuItem menuItem_3 = new JMenuItem("图书添加");
-		menuItem_3.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menuItem_3.setIcon(new ImageIcon(MainFrm.class.getResource("/image/notes_16.316981132075px_1191617_easyicon.net.png")));
+		menuItem_3.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu_1.add(menuItem_3);
 		
 		JMenuItem menuItem_5 = new JMenuItem("图书查询");
-		menuItem_5.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menuItem_5.setIcon(new ImageIcon(MainFrm.class.getResource("/image/search_15.853345554537px_1191635_easyicon.net.png")));
+		menuItem_5.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu_1.add(menuItem_5);
 		
 		JMenuItem menuItem_4 = new JMenuItem("图书删除");
-		menuItem_4.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
+		menuItem_4.setIcon(new ImageIcon(MainFrm.class.getResource("/image/cancel_24px_1205790_easyicon.net.png")));
+		menuItem_4.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu_1.add(menuItem_4);
 		
 		JMenuItem menuItem = new JMenuItem("注销登录");
+		menuItem.setIcon(new ImageIcon(MainFrm.class.getResource("/image/ui_15.709355131698px_1191606_easyicon.net.png")));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result=JOptionPane.showConfirmDialog(null,"是否退出？","注销",JOptionPane.YES_NO_OPTION);
@@ -118,7 +126,7 @@ public class MainFrm extends JFrame {
 				
 			}
 		});
-		menuItem.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
+		menuItem.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		mnNewMenu.add(menuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

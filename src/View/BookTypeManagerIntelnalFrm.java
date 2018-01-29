@@ -141,7 +141,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		bookTypeDescTxt = new JTextArea();
 		
 		JButton btnNewButton = new JButton("修改");
-		btnNewButton.setIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/user_modify_24px_556807_easyicon.net.png")));
+		btnNewButton.setIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/notes_16.316981132075px_1191617_easyicon.net.png")));
 		btnNewButton.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
