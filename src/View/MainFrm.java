@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import Dao.BookTypeDao;
 import sqlconnect.DBconnect;
+import javax.swing.ImageIcon;
 
 public class MainFrm extends JFrame {
 
@@ -60,6 +61,7 @@ public class MainFrm extends JFrame {
 		setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("基本数据维护");
+		mnNewMenu.setIcon(new ImageIcon(MainFrm.class.getResource("/image/gear_24.12px_1189518_easyicon.net.png")));
 		mnNewMenu.setFont(new Font("黑体", Font.PLAIN, 17));
 		menuBar.add(mnNewMenu);
 		
