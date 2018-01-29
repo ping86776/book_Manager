@@ -165,7 +165,7 @@ public class LoginFrm extends JFrame {
 			JOptionPane.showMessageDialog(null, "用户名不能为空！");
 			return;			
 		}
-		if(StringUtil.IsNotEmpty(password)) {
+		if(StringUtil.IsEmpty(password)) {
 			JOptionPane.showMessageDialog(null, "密码不能为空！");
 			return;
 		}

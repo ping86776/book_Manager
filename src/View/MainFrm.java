@@ -26,8 +26,7 @@ import javax.swing.ImageIcon;
 public class MainFrm extends JFrame {
 
 	private JPanel contentPane;
-	private JDesktopPane table = new JDesktopPane();
-	//实例化JDesktopPane内部窗体
+	private JDesktopPane table = new JDesktopPane();//实例化JDesktopPane内部窗体
 
 	/**
 	 * Launch the application.
@@ -156,7 +155,7 @@ public class MainFrm extends JFrame {
 		table.setLayout(gl_table);
 		contentPane.setLayout(gl_contentPane);
 		
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		//窗口最大化
 		this.setSize(988, 800);
 		this.setLocationRelativeTo(null);

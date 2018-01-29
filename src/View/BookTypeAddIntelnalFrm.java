@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -23,6 +24,8 @@ import Dao.BookTypeDao;
 import Util.StringUtil;
 import client.BookType;
 import sqlconnect.DBconnect;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JFrame;
 
 public class BookTypeAddIntelnalFrm extends JInternalFrame {
 	private JTextField BookTypeNameText;
@@ -52,6 +55,9 @@ public class BookTypeAddIntelnalFrm extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public BookTypeAddIntelnalFrm() {
+		getContentPane().setBackground(Color.WHITE);
+		setBackground(Color.LIGHT_GRAY);
+		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setMaximizable(true);
 		setEnabled(false);
 		setIconifiable(true);
@@ -60,6 +66,7 @@ public class BookTypeAddIntelnalFrm extends JInternalFrame {
 		setClosable(true);
 		setTitle("图书类别添加");
 		setBounds(100, 100, 500, 404);
+		setResizable(true);
 		
 		JLabel lblNewLabel = new JLabel("图书类别添加");
 		lblNewLabel.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
