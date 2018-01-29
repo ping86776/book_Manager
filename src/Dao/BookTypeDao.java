@@ -43,7 +43,6 @@ public class BookTypeDao {
 		}
 		System.out.println(sb.toString());
 		PreparedStatement pstmt=conn.prepareStatement(sb.toString());
-		//用where替换and
 		return pstmt.executeQuery();
 	}
 	
@@ -57,7 +56,7 @@ public class BookTypeDao {
 	public int delete(Connection conn,String id)throws Exception{
 		String sql="delete * from t_booktype where id=?";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
-		pstmt.setString(1, id);
+		pstmt.setString(1, id);		
 		return pstmt.executeUpdate();
 		
 	}
@@ -70,11 +69,11 @@ public class BookTypeDao {
 	 * @throws Exception
 	 */
 	public int update(Connection conn,BookType bookType)throws Exception{
-		String sql="update *from t_booktype where id=?,bookTypeName=?,bookTypeDesc=?";
+		String sql="update t_booktype set bookTypeName=?,bookTypeDesc=? where id=?";
 		PreparedStatement pstmt=conn.prepareStatement(sql);
-		pstmt.setInt(1, bookType.getId());
-		pstmt.setString(2, bookType.getBookTypeName());
-		pstmt.setString(3, bookType.getBookTypeDesc());
+		pstmt.setInt(3, bookType.getId());
+		pstmt.setString(1, bookType.getBookTypeName());
+		pstmt.setString(2, bookType.getBookTypeDesc());
 		return pstmt.executeUpdate();
 		
 		

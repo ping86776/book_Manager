@@ -18,6 +18,13 @@ public class BookType {
 		BookTypeName = bookTypeName;
 		BookTypeDesc = bookTypeDesc;
 	}
+	
+	public BookType(int id, String bookTypeName, String bookTypeDesc) {
+		super();
+		this.id = id;
+		BookTypeName = bookTypeName;
+		BookTypeDesc = bookTypeDesc;
+	}
 	public int getId() {
 		return id;
 	}

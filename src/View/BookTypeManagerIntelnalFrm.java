@@ -15,9 +15,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Dao.BookTypeDao;
+import Util.StringUtil;
 import client.BookType;
 import sqlconnect.DBconnect;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -28,15 +30,18 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import javax.swing.JTextArea;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	private JTable bookTypeTable= new JTable();  //查询表单
 	private DBconnect dbconn=new DBconnect();    //数据库连接类
 	private BookTypeDao bookTypeDao=new BookTypeDao();  //数据库增删改查类
 	private JTextField s_bookeTypeNameTxt = new JTextField();   //查询表单输入框
-	private BookType bookType=new BookType();
+	private BookType bookType=new BookType(); //图书类别实体类
 	private JTextField idTxt;  //修改表单编号框
 	private JTextField bookTypeNameTxt; //修改表单输入框
+	private JTextArea bookTypeDescTxt;  //修改表单备注框
 	
 	/**
 	 * Launch the application.
@@ -133,13 +138,14 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		JLabel lblNewLabel = new JLabel("描述：");
 		lblNewLabel.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
-		JTextArea bookTypeDescTxt = new JTextArea();
+		bookTypeDescTxt = new JTextArea();
 		
 		JButton btnNewButton = new JButton("修改");
 		btnNewButton.setIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/user_modify_24px_556807_easyicon.net.png")));
 		btnNewButton.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
+				bookTypeUpdateActionPerformed(e);
 			}
 		});
 		
@@ -191,6 +197,12 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		表单操作.setLayout(gl_表单操作);
+		bookTypeTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				bookTypemousePressed(e);
+			}
+		});
 				
 		bookTypeTable.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -218,6 +230,58 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		
 
 	}
+	
+	/**
+	 * 修改按钮事件
+	 * @param e
+	 */
+	private void bookTypeUpdateActionPerformed(ActionEvent e) {
+		String id=idTxt.getText();
+		String bookTypeName=bookTypeNameTxt.getText();
+		String bookTypeDesc=bookTypeDescTxt.getText();
+		if(StringUtil.IsEmpty(id)) {
+			JOptionPane.showMessageDialog(null, "请选择要修改的记录");
+			return;
+		}
+		BookType bookType=new BookType(Integer.parseInt(id),bookTypeName,bookTypeDesc); //实例化类别实体类的三个参数
+		System.out.println(bookType);
+		Connection conn=null;
+		try {
+			conn=dbconn.getconn(); //获取数据连接
+			int num=bookTypeDao.update(conn, bookType);
+			if(num==1) {
+				JOptionPane.showMessageDialog(null, "修改成功！");
+				this.resetValue(); //修改后重置表单
+				this.InitTable(new BookType()); //修改后更新表单
+			}else {
+				JOptionPane.showMessageDialog(null, "修改失败！");
+			}
+			
+			
+		}catch (Exception e1) {
+			e1.printStackTrace();
+		}finally {
+			try {
+				dbconn.closeconn(conn);//关闭数据库连接
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		
+	}
+
+	/**
+	 * 表格行点击事件
+	 * @param e
+	 */
+	private void bookTypemousePressed(MouseEvent evt) {
+		int row=bookTypeTable.getSelectedRow();
+		idTxt.setText((String)bookTypeTable.getValueAt(row, 0));  //设置text id列获取的行号列号 0行是id列
+		bookTypeNameTxt.setText((String)bookTypeTable.getValueAt(row, 1)); //设置text 类别框列获取的行号列号 0行是类别框列
+		bookTypeDescTxt.setText((String)bookTypeTable.getValueAt(row, 2)); //设置text 备注描述框获取的行号列号 0行是备注描述框列
+	}
+
 	/**
 	 * 查询按钮事件
 	 * @param evt
@@ -261,4 +325,15 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 			}
 		}
 	}
+	
+	/**
+	 * 重置表单方法
+	 */
+
+	private void resetValue(){
+			this.idTxt.setText("");
+			this.bookTypeNameTxt.setText("");
+			this.bookTypeDescTxt.setText("");
+			
+		}
 }
