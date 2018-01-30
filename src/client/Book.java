@@ -41,6 +41,10 @@ public class Book {
 	public void setBookDesc(String bookDesc) {
 		this.bookDesc = bookDesc;
 	}
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", bookTypeName=" + bookTypeName + "]";
+	}
 	
 	
 	

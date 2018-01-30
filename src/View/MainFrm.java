@@ -26,7 +26,7 @@ import javax.swing.ImageIcon;
 public class MainFrm extends JFrame {
 
 	private JPanel contentPane;
-	private JDesktopPane table = new JDesktopPane();//实例化JDesktopPane内部窗体
+	private JDesktopPane table = new JDesktopPane();  //内部窗体
 
 	/**
 	 * Launch the application.
@@ -99,6 +99,13 @@ public class MainFrm extends JFrame {
 		mnNewMenu.add(menu_1);
 		
 		JMenuItem menuItem_3 = new JMenuItem("图书添加");
+		menuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BookAddIntelnalFrm bookAddIntelnalFrm=new BookAddIntelnalFrm();
+				bookAddIntelnalFrm.setVisible(true);
+				table.add(bookAddIntelnalFrm);
+			}
+		});
 		menuItem_3.setIcon(new ImageIcon(MainFrm.class.getResource("/image/notes_16.316981132075px_1191617_easyicon.net.png")));
 		menuItem_3.setFont(new Font("微软雅黑 Light", Font.PLAIN, 18));
 		menu_1.add(menuItem_3);
@@ -161,5 +168,4 @@ public class MainFrm extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 	}
-	
 }

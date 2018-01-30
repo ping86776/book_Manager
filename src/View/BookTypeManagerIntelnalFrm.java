@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.tools.Tool;
 
 import Dao.BookTypeDao;
 import Util.StringUtil;
@@ -25,6 +27,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Scrollbar;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
@@ -35,6 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollBar;
+import javax.swing.JTabbedPane;
 
 public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	private JTable bookTypeTable= new JTable();  //查询表单
@@ -54,8 +58,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookTypeManagerIntelnalFrm frame = new BookTypeManagerIntelnalFrm();
-					frame.setVisible(true);
+					BookTypeManagerIntelnalFrm frame = new BookTypeManagerIntelnalFrm();					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,7 +78,13 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		setIconifiable(true);
 		setClosable(true);
 		setTitle("图书类别管理");
-		setBounds(100, 100, 815, 777);
+		setBounds(100, 100, 622, 696);
+//		Toolkit kit=Toolkit.getDefaultToolkit();
+//		Dimension screenSize=kit.getScreenSize();
+//		int screenWidth=screenSize.width;
+//		int screenheight=screenSize.height;
+//		setSize(screenWidth/3,screenheight);
+		setVisible(true);
 		
 		JScrollPane scrollPane = new JScrollPane();//图书类别查询框
 			
@@ -94,40 +103,40 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		});
 		button.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
-		FormscrollPane = new JPanel();//表单提交框		
-		FormscrollPane.add(new JScrollPane(bookTypeDescTxt));
-		
+		FormscrollPane = new JPanel();		
 		FormscrollPane.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "\u8868\u5355\u64CD\u4F5C", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(125)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(FormscrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(label, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(s_bookeTypeNameTxt, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
-								.addGap(29)
-								.addComponent(button))))
-					.addContainerGap(126, Short.MAX_VALUE))
+					.addGap(54)
+					.addComponent(label, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(s_bookeTypeNameTxt, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(button)
+					.addGap(53))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(52)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(FormscrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE))
+					.addGap(55))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(63)
+					.addGap(33)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label)
 						.addComponent(s_bookeTypeNameTxt, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-						.addComponent(button))
+						.addComponent(button, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
-					.addGap(44)
+					.addGap(26)
 					.addComponent(FormscrollPane, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(66, Short.MAX_VALUE))
+					.addContainerGap(390, Short.MAX_VALUE))
 		);
 		
 		JLabel label_1 = new JLabel("编号：");
@@ -148,6 +157,8 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		
 		bookTypeDescTxt = new JTextArea();
 		bookTypeDescTxt.setLineWrap(true);
+		//JScrollPane scrollpane=new JScrollPane(bookTypeDescTxt);
+		
 		JButton btnNewButton = new JButton("修改");
 		btnNewButton.setIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/notes_16.316981132075px_1191617_easyicon.net.png")));
 		btnNewButton.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
@@ -182,7 +193,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_FormscrollPane.createSequentialGroup()
-							.addGap(111)
+							.addGap(95)
 							.addComponent(btnNewButton)
 							.addGap(103)
 							.addComponent(btnNewButton_1))
@@ -190,7 +201,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 							.addComponent(lblNewLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(bookTypeDescTxt, GroupLayout.PREFERRED_SIZE, 408, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(55, Short.MAX_VALUE))
+					.addContainerGap(23, Short.MAX_VALUE))
 		);
 		gl_FormscrollPane.setVerticalGroup(
 			gl_FormscrollPane.createParallelGroup(Alignment.LEADING)
@@ -213,7 +224,9 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		);
 		FormscrollPane.setLayout(gl_FormscrollPane);
 		bookTypeTable.addMouseListener(new MouseAdapter() {
-			@Override
+			/**
+			 * table鼠标点击事件
+			 */
 			public void mousePressed(MouseEvent e) {
 				bookTypemousePressed(e);
 			}
@@ -334,10 +347,10 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	 * @param e
 	 */
 	private void bookTypemousePressed(MouseEvent evt) {
-		int row=bookTypeTable.getSelectedRow();
+		int row=bookTypeTable.getSelectedRow();  //获取鼠标选中的行
 		idTxt.setText((String)bookTypeTable.getValueAt(row, 0));  //设置text id列获取的行号列号 0行是id列
-		bookTypeNameTxt.setText((String)bookTypeTable.getValueAt(row, 1)); //设置text 类别框列获取的行号列号 0行是类别框列
-		bookTypeDescTxt.setText((String)bookTypeTable.getValueAt(row, 2)); //设置text 备注描述框获取的行号列号 0行是备注描述框列
+		bookTypeNameTxt.setText((String)bookTypeTable.getValueAt(row, 1)); //设置text 类别框列获取的行号列号 1行是类别框列
+		bookTypeDescTxt.setText((String)bookTypeTable.getValueAt(row, 2)); //设置text 备注描述框获取的行号列号 2行是备注描述框列
 	}
 
 	/**
@@ -346,7 +359,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	 */
 	
 	private void BookTypeQueryActionPerformed(ActionEvent evt) {
-		String s_bookTypeName=this.s_bookeTypeNameTxt.getText();
+		String s_bookTypeName=this.s_bookeTypeNameTxt.getText(); 
 		BookType bookType=new BookType();
 		bookType.setBookTypeName(s_bookTypeName);
 		this.InitTable(bookType);
