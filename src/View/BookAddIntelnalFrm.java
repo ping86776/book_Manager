@@ -168,6 +168,7 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 	private void bookAddActionPerformed(ActionEvent evt) {
 		String bookName=bookNameTxt.getText();
 		String bookDesc=bookDescTxt.getText();
+		String bookTypeName=(String) BookTypeJcb.getSelectedItem();
 		if(StringUtil.IsEmpty(bookName)) {
 			JOptionPane.showMessageDialog(null, "图书名称不能为空！");
 			return;
@@ -175,7 +176,7 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 										
 		int bookTypeId=QueryId(bookType); //获取BookTypeJcb图书类别Id
 		System.out.println(bookTypeId);
-		Book book=new Book(bookTypeId,bookName,bookDesc);//数据封装在book对象中
+		Book book=new Book(bookName,bookTypeId,bookTypeName,bookDesc);//数据封装在book对象中
 		System.out.println(book);
 		int num=bookDao.add(book);//数据库添加操作
 		if(num==1) {

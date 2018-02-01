@@ -16,13 +16,16 @@ public class Book {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Book(Integer bookTypeId,String bookName,String bookDesc) {
-		super();		
-		this.bookTypeId = bookTypeId;
+			
+	public Book(String bookName, Integer bookTypeId, String bookTypeName, String bookDesc) {
+		super();
 		this.bookName = bookName;
+		this.bookTypeId = bookTypeId;
+		this.bookTypeName = bookTypeName;
 		this.bookDesc = bookDesc;
 	}
+
+
 
 	public int getId() {
 		return id;
