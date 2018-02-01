@@ -26,6 +26,7 @@ import client.BookType;
 import sqlconnect.DBconnect;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JFrame;
+import java.awt.SystemColor;
 
 public class BookTypeAddIntelnalFrm extends JInternalFrame {
 	private JTextField BookTypeNameText;
@@ -55,7 +56,7 @@ public class BookTypeAddIntelnalFrm extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public BookTypeAddIntelnalFrm() {
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(SystemColor.controlHighlight);
 		setBackground(Color.LIGHT_GRAY);
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setMaximizable(true);
@@ -156,28 +157,13 @@ public class BookTypeAddIntelnalFrm extends JInternalFrame {
 			return;
 		}
 		BookType bookType=new BookType(bookTypeName,bookTypeDesc);
-		Connection conn=null;
-		try {
-			conn=dbconn.getconn();
-			int n=bookTypeDao.add(conn, bookType);
+		int n=bookTypeDao.add(bookType);
 			if(n==1) {
 				JOptionPane.showMessageDialog(null, "图书类别添加成功！");
 				resetValue();
 			}else {
 				JOptionPane.showMessageDialog(null, "图书类别添加失败！");
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "图书类别添加发生错误！");
-		}finally {
-			try {
-				dbconn.closeconn(conn);
-			} catch (Exception e) {
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, "图书类别添加发生错误！");
-			}
-		}
+			}				
 		
 	}
 

@@ -3,7 +3,9 @@ package View;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -13,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -20,16 +23,21 @@ import javax.swing.border.EmptyBorder;
 
 import Dao.BookDao;
 import Dao.BookTypeDao;
+import Util.StringUtil;
+import client.Book;
 import client.BookType;
 import sqlconnect.DBconnect;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BookAddIntelnalFrm extends JInternalFrame {
-	private JTextField BookNameTxt;
+	private JTextField bookNameTxt;  //图书名输入框
+	private JTextArea bookDescTxt;	//图书描述文本框
 	private BookType bookType=new BookType(); //图书类别实体类
 	private DBconnect dbconn=new DBconnect();    //数据库连接类
 	private BookTypeDao bookTypeDao=new BookTypeDao();  //数据库增删改查类
-	private BookDao bookDao=new BookDao();
-	private JComboBox BookTypeJcb=new JComboBox();//下拉框
+	private BookDao bookDao=new BookDao();  //图书验证类
+	private JComboBox BookTypeJcb=new JComboBox();  //图书类别下拉框
 
 	/**
 	 * Launch the application.
@@ -62,8 +70,8 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 		label.setIcon(new ImageIcon(BookAddIntelnalFrm.class.getResource("/image/tablet_15.695099818512px_1191605_easyicon.net.png")));
 		label.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
-		BookNameTxt = new JTextField();
-		BookNameTxt.setColumns(10);
+		bookNameTxt = new JTextField();
+		bookNameTxt.setColumns(10);
 		
 		JLabel label_1 = new JLabel("图书类别：");
 		label_1.setIcon(new ImageIcon(BookAddIntelnalFrm.class.getResource("/image/book_A_13.965485921889px_1191578_easyicon.net.png")));
@@ -75,13 +83,23 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 		label_2.setIcon(new ImageIcon(BookAddIntelnalFrm.class.getResource("/image/library_16px_1173951_easyicon.net.png")));
 		label_2.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
-		JTextArea BookDescTxt = new JTextArea();
+		bookDescTxt = new JTextArea();
 		
 		JButton button = new JButton("添加");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bookAddActionPerformed(e);
+			}
+		});
 		button.setIcon(new ImageIcon(BookAddIntelnalFrm.class.getResource("/image/user_modify_24px_556807_easyicon.net.png")));
 		button.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
 		JButton button_1 = new JButton("取消");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetValueActionPerformed(e);
+			}
+		});
 		button_1.setIcon(new ImageIcon(BookAddIntelnalFrm.class.getResource("/image/cancel_24px_1205790_easyicon.net.png")));
 		button_1.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -97,12 +115,12 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(BookNameTxt, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+									.addComponent(bookNameTxt, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
 									.addComponent(label_1)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(BookTypeJcb, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-								.addComponent(BookDescTxt)))
+								.addComponent(bookDescTxt)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(159)
 							.addComponent(button)
@@ -116,13 +134,13 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 					.addGap(31)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label)
-						.addComponent(BookNameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(bookNameTxt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(label_1)
 						.addComponent(BookTypeJcb, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(59)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_2)
-						.addComponent(BookDescTxt, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE))
+						.addComponent(bookDescTxt, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE))
 					.addGap(26)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(button)
@@ -134,27 +152,100 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 		this.InitBookType();
 	}
 	
+	/**
+	 * 取消按钮事件
+	 * @param evt
+	 */
+	private void resetValueActionPerformed(ActionEvent evt) {
+		resetValue();
+		
+	}
+
+	/**
+	 * 图书添加按钮事件
+	 * @param evt
+	 */
+	private void bookAddActionPerformed(ActionEvent evt) {
+		String bookName=bookNameTxt.getText();
+		String bookDesc=bookDescTxt.getText();
+		if(StringUtil.IsEmpty(bookName)) {
+			JOptionPane.showMessageDialog(null, "图书名称不能为空！");
+			return;
+		}
+										
+		int bookTypeId=QueryId(bookType); //获取BookTypeJcb图书类别Id
+		System.out.println(bookTypeId);
+		Book book=new Book(bookTypeId,bookName,bookDesc);//数据封装在book对象中
+		System.out.println(book);
+		int num=bookDao.add(book);//数据库添加操作
+		if(num==1) {
+			JOptionPane.showMessageDialog(null, "添加成功！");
+		}else {
+			JOptionPane.showMessageDialog(null, "添加失败！");
+		}
+		
+		
+	}
+	
+	/**
+	 * 重置表单事件
+	 */
+	private void resetValue() {
+		bookNameTxt.setText("");
+		bookDescTxt.setText("");
+		if(BookTypeJcb.getItemCount()>0) {
+			BookTypeJcb.setSelectedIndex(0);
+		}
+		
+	}
+	
+	/**
+	 * 初始化下拉框事件
+	 */
 	private void InitBookType() {
-		Connection conn=null;
-		try {
-			conn=dbconn.getconn();
-			ResultSet rs=bookTypeDao.Query(conn,new BookType());
-			while(rs.next()) {
-				BookType bookType=new BookType();
-				bookType.setId(rs.getInt("id"));
-				bookType.setBookTypeName(rs.getString("bookTypeName"));
-				this.BookTypeJcb.addItem(bookType.getBookTypeName());				
-				
+		ResultSet rs=bookTypeDao.Query(new BookType());
+			try {
+				while(rs.next()) {
+					BookType bookType=new BookType();
+					bookType.setId(rs.getInt("id"));
+					bookType.setBookTypeName(rs.getString("bookTypeName"));
+					BookTypeJcb.addItem(bookType.getBookTypeName());
+//				    Vector v=new Vector();
+//				    v.add(rs.getInt("id"));
+//				    v.add(rs.getString("bookTypeName"));
+//				    BookTypeJcb.addItem(v);												
+				}
+			} catch (SQLException e) {				
+				e.printStackTrace();
 			}
-			System.out.println(bookType);
+				
+	}
+	
+	public int QueryId(BookType bookType) {
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet resultSet=null;
+		int resultId=0;
+		try {
+			conn=DBconnect.getconn();
+			StringBuffer sb=new StringBuffer("select id from t_booktype where bookTypeName like '%"+BookTypeJcb.getSelectedItem()+"%'");
+			pstmt=conn.prepareStatement(sb.toString());
+			//System.out.println(BookTypeJcb.getSelectedItem());
+			//System.out.println(sb.toString());
+			resultSet=pstmt.executeQuery();
+			while(resultSet.next()) {
+				resultId=resultSet.getInt("id");
+			}
+			//System.out.println(resultId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			try {
-				dbconn.closeconn(conn);
+				DBconnect.closeconn(conn);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		return resultId;
 	}
 }

@@ -11,6 +11,19 @@ public class Book {
 	private Integer bookTypeId;  //图书种类Id
 	private String bookTypeName; //图书类别名称
 	private String bookDesc;  //备注
+		
+	public Book() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Book(Integer bookTypeId,String bookName,String bookDesc) {
+		super();		
+		this.bookTypeId = bookTypeId;
+		this.bookName = bookName;
+		this.bookDesc = bookDesc;
+	}
+
 	public int getId() {
 		return id;
 	}

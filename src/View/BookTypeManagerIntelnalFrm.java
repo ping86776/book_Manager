@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
@@ -39,12 +40,13 @@ import java.awt.event.MouseEvent;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollBar;
 import javax.swing.JTabbedPane;
+import java.awt.SystemColor;
 
 public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	private JTable bookTypeTable= new JTable();  //查询表单
 	private DBconnect dbconn=new DBconnect();    //数据库连接类
 	private BookTypeDao bookTypeDao=new BookTypeDao();  //数据库增删改查类
-	private JTextField s_bookeTypeNameTxt = new JTextField();   //查询表单输入框
+	private JTextField s_bookTypeNameTxt = new JTextField();   //查询表单输入框
 	private BookType bookType=new BookType(); //图书类别实体类
 	private JPanel FormscrollPane;//表单提交框
 	private JTextField idTxt;  //修改表单编号框
@@ -70,7 +72,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public BookTypeManagerIntelnalFrm() {
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(SystemColor.controlHighlight);
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setBackground(Color.WHITE);
 		setFrameIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/Folder_Library_24px_1174182_easyicon.net.png")));
@@ -92,7 +94,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		label.setFont(new Font("微软雅黑 Light", Font.PLAIN, 17));
 		
 		
-		s_bookeTypeNameTxt.setColumns(10);
+		s_bookTypeNameTxt.setColumns(10);
 		
 		JButton button = new JButton("查询");
 		button.setIcon(new ImageIcon(BookTypeManagerIntelnalFrm.class.getResource("/image/query_24px_1181401_easyicon.net.png")));
@@ -113,7 +115,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 					.addGap(54)
 					.addComponent(label, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(s_bookeTypeNameTxt, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
+					.addComponent(s_bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(button)
 					.addGap(53))
@@ -130,7 +132,7 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 					.addGap(33)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label)
-						.addComponent(s_bookeTypeNameTxt, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+						.addComponent(s_bookTypeNameTxt, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 						.addComponent(button, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
@@ -272,27 +274,15 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		int n=JOptionPane.showConfirmDialog(null, "确定删除该记录？","否",JOptionPane.YES_NO_OPTION);
 		System.out.println("n="+n);
 		if(n==0) {
-			Connection conn=null;
-			try {
-				conn=dbconn.getconn();
-				int deletenum=bookTypeDao.delete(conn, id);
-				System.out.println(deletenum);
-				if(deletenum==1) {
+			int deletenum=bookTypeDao.delete(id);
+			if(deletenum==1) {
 					JOptionPane.showMessageDialog(null, "删除成功！");
 					this.resetValue();
 					this.InitTable(new BookType());
 				}else {
 					JOptionPane.showMessageDialog(null, "删除失败！");
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally {
-				try {
-					dbconn.closeconn(conn);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			
 		}
 		
 		
@@ -316,29 +306,16 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 		}
 		BookType bookType=new BookType(Integer.parseInt(id),bookTypeName,bookTypeDesc); //实例化类别实体类的三个参数
 		System.out.println(bookType);
-		Connection conn=null;
-		try {
-			conn=dbconn.getconn(); //获取数据连接
-			int num=bookTypeDao.update(conn, bookType);
-			if(num==1) {
-				JOptionPane.showMessageDialog(null, "修改成功！");
-				this.resetValue(); //修改后重置表单
-				this.InitTable(new BookType()); //修改后更新表单
-			}else {
-				JOptionPane.showMessageDialog(null, "修改失败！");
-			}
-			
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				dbconn.closeconn(conn);//关闭数据库连接
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		int num=bookTypeDao.update(bookType);
+		System.out.println(num);
+		if(num==1) {
+			JOptionPane.showMessageDialog(null, "修改成功！");
+			this.resetValue(); //修改后重置表单
+			this.InitTable(new BookType()); //修改后更新表单
+		}else {
+			JOptionPane.showMessageDialog(null, "修改失败！");
 		}
-		
+				
 		
 	}
 
@@ -359,9 +336,10 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	 */
 	
 	private void BookTypeQueryActionPerformed(ActionEvent evt) {
-		String s_bookTypeName=this.s_bookeTypeNameTxt.getText(); 
+		String s_bookTypeName=s_bookTypeNameTxt.getText(); 
 		BookType bookType=new BookType();
 		bookType.setBookTypeName(s_bookTypeName);
+		System.out.println(s_bookTypeName);
 		this.InitTable(bookType);
 		
 	}
@@ -373,28 +351,19 @@ public class BookTypeManagerIntelnalFrm extends JInternalFrame {
 	private void InitTable(BookType bookType) {
 		DefaultTableModel dfm=(DefaultTableModel) bookTypeTable.getModel();
 		dfm.setRowCount(0);       //清空表格防止下次输入查询时重复显示
-		Connection conn=null;
-		try {
-			conn=dbconn.getconn();
-			ResultSet rs=bookTypeDao.Query(conn, bookType);
-			while(rs.next()) {
-				Vector v=new Vector();
-				v.add(rs.getString("id"));
-				v.add(rs.getString("bookTypeName"));
-				v.add(rs.getString("bookTypeDesc"));
-				dfm.addRow(v);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
+		ResultSet rs=bookTypeDao.Query(bookType);
 			try {
-				dbconn.closeconn(conn);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				while(rs.next()) {
+					Vector v=new Vector();
+					v.add(rs.getString("id"));
+					v.add(rs.getString("bookTypeName"));
+					v.add(rs.getString("bookTypeDesc"));
+					dfm.addRow(v);
+				}
+			} catch (SQLException e) {				
 				e.printStackTrace();
 			}
-		}
+		
 	}
 	
 	/**

@@ -11,16 +11,16 @@ import java.sql.*;
  */
 
 public class DBconnect {
-	private String dburl="jdbc:mysql://localhost:3306/db_book";
-	private String dbUserName="root";            //用户
-	private String dbpassword="86776";			//密码
-	private String jdbcName="com.mysql.jdbc.Driver";   //驱动名称
+	private static final String dburl="jdbc:mysql://localhost:3306/db_book";
+	private static final String dbUserName="root";            //用户
+	private static final String dbpassword="86776";			//密码
+	private static final String jdbcName="com.mysql.jdbc.Driver";   //驱动名称
 	/**
 	 * 建立数据库连接
 	 * @return
 	 * @throws Exception
 	 */
-	public Connection getconn()throws Exception{
+	public static Connection getconn()throws ClassNotFoundException, SQLException{
 		Class.forName(jdbcName);   //注册jdbc驱动
 		Connection conn = DriverManager.getConnection(dburl, dbUserName, dbpassword);
 		//连接数据库
@@ -31,7 +31,7 @@ public class DBconnect {
 	 * @param conn
 	 * @throws Exception
 	 */
-	public void closeconn(Connection conn)throws Exception{
+	public static void closeconn(Connection conn)throws Exception{
 		if(conn!=null) {
 			conn.close();
 		}
