@@ -181,6 +181,7 @@ public class BookAddIntelnalFrm extends JInternalFrame {
 		int num=bookDao.add(book);//数据库添加操作
 		if(num==1) {
 			JOptionPane.showMessageDialog(null, "添加成功！");
+			resetValue();
 		}else {
 			JOptionPane.showMessageDialog(null, "添加失败！");
 		}

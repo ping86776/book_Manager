@@ -158,7 +158,7 @@ public class LoginFrm extends JFrame {
 	 * 登录验证和判断输入是否为空值判断方法
 	 * @param e
 	 */
-	private void LoginValueActionPerformed(ActionEvent e) {
+	private void LoginValueActionPerformed(ActionEvent evt) {
 		String userName =this.userNameText.getText();
 		String password =new String(this.passwordText.getPassword()); //char转换成string类型
 		if(StringUtil.IsEmpty(userName)) {
@@ -169,30 +169,17 @@ public class LoginFrm extends JFrame {
 			JOptionPane.showMessageDialog(null, "密码不能为空！");
 			return;
 		}
-		User user=new User(userName,password);  //登录验证
-		Connection conn=null;
-		try {
-			conn=dbconn.getconn();
-			User CurrentUser=userDao.login(conn, user);
-			if(CurrentUser!=null) {
-				dispose();           //销毁登录窗口
-				new MainFrm().setVisible(true);       //设置新窗口可见
-			}else {
-				JOptionPane.showMessageDialog(null, "用户名或密码错误！");
-			}
-			this.userNameText.setText("");
-			this.passwordText.setText("");
-			
-		}catch(Exception se) {
-			se.printStackTrace();
-			
-		}finally {
-			try {
-				dbconn.closeconn(conn);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
+		User user=new User(userName,password);  //封装数据
+		User CurrentUser=userDao.login(user);	//登陆验证
+		if(CurrentUser!=null) {
+			dispose();           //销毁登录窗口
+			new MainFrm().setVisible(true);       //设置新窗口可见
+		}else {
+			JOptionPane.showMessageDialog(null, "用户名或密码错误！");
 		}
+		this.userNameText.setText("");
+		this.passwordText.setText("");
+		
 		
 	}
 

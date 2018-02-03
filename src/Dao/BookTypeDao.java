@@ -17,7 +17,6 @@ import sqlconnect.DBconnect;
  *
  */
 public class BookTypeDao {
-	//private JComboBox BookTypeJcb=new JComboBox();
 	/**
 	 * 图书类别添加操作方法
 	 * @param conn
